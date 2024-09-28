@@ -1,0 +1,10 @@
+﻿Welcome to Dungeon Crawler!
+
+You are going to play against snakes (green) and rats (red) in a maze. Move your player (yellow) with the arrow keys.
+If you move into a snake or a rat, you make an attack and you might either loose health or hurt the enemy.
+
+The game will end eighter when you kill all the enemies, when you die or when you press the Escape button.
+
+Press Enter to start the game.
+
+Good luck and have fun!
