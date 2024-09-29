@@ -35,6 +35,10 @@ List<LevelElement> elementList = new List<LevelElement>();
 if (File.Exists(textfile))
 {
     elementList = leveldata.Load(textfile);
+    foreach (var element in elementList)
+    {
+        Console.WriteLine($"Element position: ({element.Character}, {element.Position.X}, {element.Position.Y})");
+    }
 }
 else
 {

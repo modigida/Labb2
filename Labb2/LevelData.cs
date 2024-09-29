@@ -38,7 +38,7 @@ namespace Labb2
         }
         public static void Print(int width, int height, List<LevelElement>  elements)
         {
-            char[,] maze = new char[height + 1, width + 1];
+            char[,] maze = new char[height, width];
 
             for (int i = 0; i < height; i++)
             {
@@ -77,17 +77,15 @@ namespace Labb2
                             wall.Draw();
                             break;
                         }
-                        else if (element is Rat && element.Position.X == j && element.Position.Y == i)
+                        else if (element is Rat && element.Position.Y == i)
                         {
                             Rat rat = (Rat)element;
                             rat.Draw();
-                            break;
                         }
-                        else if (element is Snake && element.Position.X == j && element.Position.Y == i)
+                        else if (element is Snake && element.Position.Y == i)
                         {
                             Snake snake = (Snake)element;
                             snake.Draw();
-                            break;
                         }
                     }
                 }

@@ -32,7 +32,8 @@
                     break;
             }
             if (!IsWall(ratPosition.x, ratPosition.y) && 
-                !IsPlayer(ratPosition.x, ratPosition.y, playerPosition.x, playerPosition.y))
+                !IsPlayer(ratPosition.x, ratPosition.y, playerPosition.x, playerPosition.y) && 
+                (ratPosition.x < 53 && ratPosition.y < 18))
             {
                 Position = new StructPosition(ratPosition.x, ratPosition.y);
             }
@@ -40,4 +41,3 @@
         }
     }
 }
-            
