@@ -11,7 +11,6 @@ namespace Labb2
             Moves++;
             MovePlayer(player);
             MoveEnemies(player);
-            // ToDo: This output never shows in the consoll
             Console.WriteLine(player.ToString());
         }
         public void MovePlayer(Player player)
@@ -26,25 +25,6 @@ namespace Labb2
             {
                 QuitGame(player);
             }
-        }
-        private void QuitGame(Player player)
-        {
-            Console.SetCursorPosition(1, Console.WindowHeight - 7);
-
-            // ToDo: Fix the printing bugg, first letter is not printed
-            string endMessage = "xAre you sure? Press Enter to end the game.";
-            Console.WriteLine(endMessage);
-
-            ConsoleKey endKey = Console.ReadKey().Key;
-            if (endKey == ConsoleKey.Enter)
-            {
-                Console.SetCursorPosition(1, Console.WindowHeight - 5);
-                string finalMessage = "Spelet är avslutat. Tack för att du spelade. Välkommen åter!";
-                Console.WriteLine(finalMessage);
-
-                Environment.Exit(0);
-            }
-            Console.SetCursorPosition(player.Position.X, player.Position.Y);
         }
         public void MoveEnemies(Player player)
         {
@@ -90,46 +70,73 @@ namespace Labb2
         }
         public static void PlayerAttackEnemy(Player player, int x, int y)
         {
-            foreach (var enemy in Enemies)
+            var enemy = Enemies.FirstOrDefault(e => e.Position.X == x && e.Position.Y == y);
+
+            if (enemy != null) 
             {
-                if (enemy.Position.X == x && enemy.Position.Y == y)
+                if (enemy is Rat rat)
                 {
-                    if (enemy is Rat rat)
-                    {
-                        int attack = player.AttackDice.Throw();
-                        int defence = rat.DefenceDice.Throw();
-                        int damage = attack - defence;
-                        if (damage > 0)
-                        {
-                            rat.HealthPoints -= damage;
-                        }
-                        else if (damage < 0)
-                        {
-                            player.HealthPoints -= Math.Abs(damage);
-                        }
-                    }
-                    else if (enemy is Snake snake)
-                    {
-                        int attack = player.AttackDice.Throw();
-                        int defence = snake.DefenceDice.Throw();
-                        int damage = attack - defence;
-                        if (damage > 0)
-                        {
-                            snake.HealthPoints -= damage;
-                        }
-                        else if (damage < 0)
-                        {
-                            player.HealthPoints -= Math.Abs(damage);
-                        }
-                    }
+                    ExecuteAttack(player, rat);
+                }
+                else if (enemy is Snake snake)
+                {
+                    ExecuteAttack(player, snake);
                 }
             }
-            
+        }
+        private static void ExecuteAttack(Player player, Enemy enemy)
+        {
+            int attack = player.AttackDice.Throw();
+            int defence = enemy.DefenceDice.Throw();
+            int damage = attack - defence;
+
+            if (damage > 0)
+            {
+                enemy.HealthPoints -= damage;
+                Console.SetCursorPosition(0, 1);
+                Console.WriteLine($"You attacked the {enemy.Name} and dealt {damage} damage. Current HP is {enemy.HealthPoints}");
+                if (enemy.HealthPoints <= 0)
+                {
+                    Enemies.Remove(enemy);
+                }
+            }
+            else if (damage < 0)
+            {
+                player.HealthPoints -= Math.Abs(damage);
+                if (player.HealthPoints <= 0)
+                {
+                    Console.WriteLine(GameOverMessage());
+                    // Skapa game over-funktion
+                }
+            }
         }
         public static void RatAttackPlayer()
         {
             // Not needed for snake to be able to attack player sinse snake only moves away from player
         }
+        private void QuitGame(Player player)
+        {
+            Console.SetCursorPosition(1, Console.WindowHeight - 7);
 
+            // ToDo: Fix the printing bugg, first letter is not printed
+            string endMessage = "xAre you sure? Press Enter to end the game.";
+            Console.WriteLine(endMessage);
+
+            ConsoleKey endKey = Console.ReadKey().Key;
+            if (endKey == ConsoleKey.Enter)
+            {
+                Console.SetCursorPosition(1, Console.WindowHeight - 5);
+                string finalMessage = "Spelet är avslutat. Tack för att du spelade. Välkommen åter!";
+                Console.WriteLine(finalMessage);
+
+                Environment.Exit(0);
+            }
+            Console.SetCursorPosition(player.Position.X, player.Position.Y);
+        }
+        public static string GameOverMessage()
+        {
+            string gameOverMessage = "You ran out of health points and died. Game over!";
+            return gameOverMessage;
+        }
     }
 }

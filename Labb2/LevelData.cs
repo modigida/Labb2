@@ -52,7 +52,6 @@ namespace Labb2
                     maze[i, j] = ' ';
                 }
             }
-
             return maze;
         }
         private static void PlaceElementsInMaze(char[,] maze, List<LevelElement> elements)

@@ -1,6 +1,4 @@
-﻿using System.Security.Principal;
-
-namespace Labb2
+﻿namespace Labb2
 {
     public class Dice
     {

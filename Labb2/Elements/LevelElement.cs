@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Labb2.Elements
+﻿namespace Labb2.Elements
 {
     public abstract class LevelElement
     {

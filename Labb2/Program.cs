@@ -27,7 +27,6 @@ while (true)
 }
 
 var leveldata = new LevelData();
-
 string textfile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Levels", "Level1.txt");
 
 List<LevelElement> elementList = new List<LevelElement>(); 
