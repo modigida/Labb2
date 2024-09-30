@@ -1,4 +1,5 @@
 ﻿using Labb2.Elements;
+using System.Reflection.Metadata.Ecma335;
 
 namespace Labb2
 {
@@ -21,6 +22,25 @@ namespace Labb2
             {
                 player.Move(key);
             }
+            else if (key == ConsoleKey.Escape)
+            {
+                QuitGame(player);
+            }
+        }
+        private void QuitGame(Player player)
+        {
+            Console.SetCursorPosition(1, Console.WindowHeight - 10);
+            
+            // ToDo: Fix the printing bugg, first letter is not printed
+            string endMessage = "xAre you sure? Press Enter to end the game.";
+            Console.WriteLine(endMessage);
+            
+            ConsoleKey endKey = Console.ReadKey().Key;
+            if (endKey == ConsoleKey.Enter)
+            {
+                Environment.Exit(0);
+            }
+            Console.SetCursorPosition(player.Position.X, player.Position.Y);
         }
         public void MoveEnemies(Player player)
         {

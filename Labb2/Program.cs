@@ -41,7 +41,6 @@ else
     Console.WriteLine("File not found");
 }
 
-bool isRunning = true;
 var player = new Player(new StructPosition(1, 1));
 
 int maxX = elementList.Max(element => element.Position.X);
@@ -54,30 +53,9 @@ do
     player.Draw();
     GameLoop.UpdateVisibleElements((player.Position.X, player.Position.Y), elementList);
     LevelData.Print(maxX + 1, maxY + 1, elementList);
-
-    // This function delays the players movement since it reads a keypress
-    ConsoleKey key = Console.ReadKey().Key;
-    if (key == ConsoleKey.Escape)
-    {
-        Console.SetCursorPosition(1, Console.WindowHeight - 10);
-
-        // ToDo: Fix the printing bugg, first letter is not printed
-        string endMessage = "xAre you sure? Press Enter to end the game.";
-        Console.WriteLine(endMessage);
-        
-        ConsoleKey endKey = Console.ReadKey().Key;
-        if (endKey == ConsoleKey.Enter)
-        {
-            isRunning = false;
-        }
-        else
-        {
-            isRunning = true;
-        }
-        Console.SetCursorPosition(player.Position.X, player.Position.Y);
-    }
+    // Loop will end when game over or player wins
 }
-while (isRunning);
+while (true);
 
 Console.SetCursorPosition(1, Console.WindowHeight - 10);
 string finalMessage = "Spelet är avslutat. Tack för att du spelade. Välkommen åter!";
