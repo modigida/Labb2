@@ -53,5 +53,15 @@ namespace Labb2
             }
             return playerPosition;
         }
+        public override string ToString()
+        {
+            Console.SetCursorPosition(0, 0);
+            string nameSection = $"Name: {Name}".PadRight(14);
+            string healthSection = $"Health: {HealthPoints}/100".PadRight(17).PadLeft(19);
+            string turnSection = $"Turn: {GameLoop.Moves}".PadLeft(10);
+
+            string playerString = $"{nameSection} - {healthSection} - {turnSection}";
+            return playerString;
+        }
     }
 }

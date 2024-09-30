@@ -11,6 +11,8 @@ namespace Labb2
             Moves++;
             MovePlayer(player);
             MoveEnemies(player);
+            // ToDo: This output never shows in the consoll
+            Console.WriteLine(player.ToString());
         }
         public void MovePlayer(Player player)
         {
@@ -27,7 +29,7 @@ namespace Labb2
         }
         private void QuitGame(Player player)
         {
-            Console.SetCursorPosition(1, Console.WindowHeight - 10);
+            Console.SetCursorPosition(1, Console.WindowHeight - 7);
 
             // ToDo: Fix the printing bugg, first letter is not printed
             string endMessage = "xAre you sure? Press Enter to end the game.";
@@ -36,7 +38,7 @@ namespace Labb2
             ConsoleKey endKey = Console.ReadKey().Key;
             if (endKey == ConsoleKey.Enter)
             {
-                Console.SetCursorPosition(1, Console.WindowHeight - 10);
+                Console.SetCursorPosition(1, Console.WindowHeight - 5);
                 string finalMessage = "Spelet är avslutat. Tack för att du spelade. Välkommen åter!";
                 Console.WriteLine(finalMessage);
 

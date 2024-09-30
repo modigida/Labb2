@@ -35,7 +35,13 @@ namespace Labb2
             }
             return Elements;
         }
-        public static void Print(int width, int height, List<LevelElement>  elements)
+        public static void Print(int width, int height, List<LevelElement> elements)
+        {
+            char[,] maze = InitializeMaze(width, height);
+            PlaceElementsInMaze(maze, elements);
+            DrawMaze(maze, elements);
+        }
+        private static char[,] InitializeMaze(int width, int height)
         {
             char[,] maze = new char[height, width];
 
@@ -46,6 +52,11 @@ namespace Labb2
                     maze[i, j] = ' ';
                 }
             }
+
+            return maze;
+        }
+        private static void PlaceElementsInMaze(char[,] maze, List<LevelElement> elements)
+        {
             foreach (var element in elements)
             {
                 if (element is Wall)
@@ -64,27 +75,33 @@ namespace Labb2
                     LevelElement.Enemies.Add(element);
                 }
             }
+        }
+        private static void DrawMaze(char[,] maze, List<LevelElement> elements)
+        {
+            int height = maze.GetLength(0);
+            int width = maze.GetLength(1);
+
             for (int i = 0; i < height; i++)
             {
                 for (int j = 0; j < width; j++)
                 {
                     foreach (var element in elements)
                     {
-                        if (element is Wall && element.Position.X == j && element.Position.Y == i)
+                        if (element.Position.X == j && element.Position.Y == i)
                         {
-                            Wall wall = (Wall)element;
-                            wall.Draw();
+                            if (element is Wall)
+                            {
+                                ((Wall)element).Draw();
+                            }
+                            else if (element is Rat)
+                            {
+                                ((Rat)element).Draw();
+                            }
+                            else if (element is Snake)
+                            {
+                                ((Snake)element).Draw();
+                            }
                             break;
-                        }
-                        else if (element is Rat && element.Position.Y == i)
-                        {
-                            Rat rat = (Rat)element;
-                            rat.Draw();
-                        }
-                        else if (element is Snake && element.Position.Y == i)
-                        {
-                            Snake snake = (Snake)element;
-                            snake.Draw();
                         }
                     }
                 }
