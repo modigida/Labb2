@@ -14,7 +14,7 @@ namespace Labb2
             Color = ConsoleColor.DarkYellow;
             IsVisible = true;
             Name = "Player";
-            HealthPoints = 25;
+            HealthPoints = 100;
             AttackDice = new Dice(2, 6, 2);
             DefenceDice = new Dice(2, 6, 0);
         }
@@ -24,9 +24,13 @@ namespace Labb2
 
             var newPosition = MovePlayer(key, (Position.X, Position.Y));
             
-            if (!IsWall(newPosition.x, newPosition.y) && !IsEnemie(newPosition.x, newPosition.y))
+            if (!IsWall(newPosition.x, newPosition.y) && !IsEnemie(this, newPosition.x, newPosition.y))
             {
                 Position = new StructPosition(newPosition.x, newPosition.y);
+            }
+            if (IsEnemie(this, newPosition.x, newPosition.y))
+            {
+                GameLoop.PlayerAttackEnemy(this, newPosition.x, newPosition.y);
             }
             Draw(previousPosition);
         }

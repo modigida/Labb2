@@ -41,14 +41,14 @@ else
     Console.WriteLine("File not found");
 }
 
-var player = new Player(new StructPosition(1, 1));
+var player = new Player(new StructPosition(1, 3));
 
 int maxX = elementList.Max(element => element.Position.X);
 int maxY = elementList.Max(element => element.Position.Y);
-
+GameLoop.Enemies = elementList.Where(element => element is Enemy).ToList();
 do
 {
-    var game = new GameLoop(player, elementList);
+    var game = new GameLoop(player);//, elementList);
     Console.Clear();
     player.Draw();
     GameLoop.UpdateVisibleElements((player.Position.X, player.Position.Y), elementList);
@@ -57,8 +57,6 @@ do
 }
 while (true);
 
-Console.SetCursorPosition(1, Console.WindowHeight - 10);
-string finalMessage = "Spelet är avslutat. Tack för att du spelade. Välkommen åter!";
-Console.WriteLine(finalMessage);
-string amountOfGameLoops = $"Antal drag: {GameLoop.Moves}";
-Console.WriteLine(amountOfGameLoops);
+
+//string amountOfGameLoops = $"Antal drag: {GameLoop.Moves}";
+//Console.WriteLine(amountOfGameLoops);

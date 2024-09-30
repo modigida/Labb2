@@ -22,7 +22,13 @@ namespace Labb2
                 total += random.Next(1, SidesPerDice + 1); 
             }
             total += Modifier;
-            return 0;
+            return total;
+        }
+        public override string ToString()
+        {
+            Console.SetCursorPosition(0, 0);
+            string resultString = "This is the result of the attack.";
+            return resultString;
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace Labb2.Elements
+﻿using System;
+
+namespace Labb2.Elements
 {
     public abstract class LevelElement
     {
@@ -79,11 +81,10 @@
             }
             return false; 
         }
-        public bool IsEnemie(int x, int y)
+        public bool IsEnemie(Player player, int x, int y)
         {
-            if (Enemies.Any(enemie => enemie.Position.X == x && enemie.Position.Y == y))
+            if (Enemies.Any(enemy => enemy.Position.X == x && enemy.Position.Y == y))
             {
-                // Create attack method
                 return true;
             }
             return false;

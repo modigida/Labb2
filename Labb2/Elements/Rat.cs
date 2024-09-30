@@ -37,6 +37,10 @@
             {
                 Position = new StructPosition(ratPosition.x, ratPosition.y);
             }
+            if (IsPlayer(ratPosition.x, ratPosition.y, playerPosition.x, playerPosition.y))
+            {
+                //GameLoop.EnemyAttackPlayer();
+            }
             Draw(previousPosition);
         }
     }
