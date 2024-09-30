@@ -35,10 +35,6 @@ List<LevelElement> elementList = new List<LevelElement>();
 if (File.Exists(textfile))
 {
     elementList = leveldata.Load(textfile);
-    foreach (var element in elementList)
-    {
-        Console.WriteLine($"Element position: ({element.Character}, {element.Position.X}, {element.Position.Y})");
-    }
 }
 else
 {
@@ -46,7 +42,6 @@ else
 }
 
 bool isRunning = true;
-
 var player = new Player(new StructPosition(1, 1));
 
 int maxX = elementList.Max(element => element.Position.X);

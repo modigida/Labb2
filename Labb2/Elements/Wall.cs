@@ -5,7 +5,7 @@
         public Wall(StructPosition position) : base(position)
         {
             Character = '#';
-            Color = ConsoleColor.Gray;
+            Color = ConsoleColor.White;
         }
     }
 }

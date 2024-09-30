@@ -19,7 +19,8 @@
             {
                 if (Character == '#')
                 {
-                    Console.BackgroundColor = Color;
+                    Console.BackgroundColor = ConsoleColor.DarkGray;
+                    Console.ForegroundColor = Color;
                 }
                 Console.ForegroundColor = Color;
             }
@@ -52,7 +53,8 @@
                 {
                     if(Character == '#')
                     {
-                        Console.BackgroundColor = Color;
+                        Console.BackgroundColor = ConsoleColor.DarkGray;
+                        Console.ForegroundColor = Color;
                     }
                     Console.ForegroundColor = Color;
                 }
