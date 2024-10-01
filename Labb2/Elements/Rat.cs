@@ -33,13 +33,15 @@
             }
             if (!IsWall(ratPosition.x, ratPosition.y) && 
                 !IsPlayer(ratPosition.x, ratPosition.y, playerPosition.x, playerPosition.y) && 
+                !IsEnemy(ratPosition.x, ratPosition.y) &&
                 (ratPosition.x < 53 && ratPosition.y < 18))
             {
                 Position = new StructPosition(ratPosition.x, ratPosition.y);
             }
             if (IsPlayer(ratPosition.x, ratPosition.y, playerPosition.x, playerPosition.y))
             {
-                //GameLoop.EnemyAttackPlayer();
+                Player player = GameLoop.GetPlayer();
+                GameLoop.RatAttackPlayer(this, player);
             }
             Draw(previousPosition);
         }

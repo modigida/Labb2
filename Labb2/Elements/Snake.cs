@@ -37,7 +37,8 @@
                     snakePosition.y += 1;
                 }
                 if (!IsWall(snakePosition.x, snakePosition.y) && 
-                    !IsPlayer(snakePosition.x, snakePosition.y, playerPosition.x, playerPosition.y))
+                    !IsPlayer(snakePosition.x, snakePosition.y, playerPosition.x, playerPosition.y) &&
+                    !IsEnemy(snakePosition.x, snakePosition.y))
                 {
                     Position = new StructPosition(snakePosition.x, snakePosition.y);
                 }

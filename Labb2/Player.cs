@@ -24,11 +24,11 @@ namespace Labb2
 
             var newPosition = MovePlayer(key, (Position.X, Position.Y));
             
-            if (!IsWall(newPosition.x, newPosition.y) && !IsEnemie(this, newPosition.x, newPosition.y))
+            if (!IsWall(newPosition.x, newPosition.y) && !IsEnemy(newPosition.x, newPosition.y))
             {
                 Position = new StructPosition(newPosition.x, newPosition.y);
             }
-            if (IsEnemie(this, newPosition.x, newPosition.y))
+            if (IsEnemy(newPosition.x, newPosition.y))
             {
                 GameLoop.PlayerAttackEnemy(this, newPosition.x, newPosition.y);
             }

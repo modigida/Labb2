@@ -1,4 +1,5 @@
 ﻿using Labb2.Elements;
+using System;
 
 namespace Labb2
 {
@@ -6,9 +7,11 @@ namespace Labb2
     {
         public static List<LevelElement> Enemies = new List<LevelElement>();
         public static int Moves { get; set; }
+        private static Player player;
         public GameLoop(Player player)
         {
             Moves++;
+            GameLoop.player = player;
             MovePlayer(player);
             MoveEnemies(player);
             Console.WriteLine(player.ToString());
@@ -110,9 +113,31 @@ namespace Labb2
                 }
             }
         }
-        public static void RatAttackPlayer()
+        public static void RatAttackPlayer(Rat rat, Player player)
         {
-            // Not needed for snake to be able to attack player sinse snake only moves away from player
+            int attack = rat.AttackDice.Throw();
+            int defence = player.DefenceDice.Throw();
+            int damage = attack - defence;
+
+            if (damage > 0)
+            {
+                player.HealthPoints -= damage;
+                Console.SetCursorPosition(0, 1);
+                Console.WriteLine($"You attacked the {player.Name} and dealt {damage} damage. Current HP is {player.HealthPoints}");
+                if (player.HealthPoints <= 0)
+                {
+                    // Game over
+                    Console.WriteLine(GameOverMessage());
+                }
+            }
+            else if (damage < 0)
+            {
+                rat.HealthPoints -= Math.Abs(damage);
+                if (rat.HealthPoints <= 0)
+                {
+                    Enemies.Remove(rat);
+                }
+            }
         }
         private void QuitGame(Player player)
         {
@@ -132,6 +157,10 @@ namespace Labb2
                 Environment.Exit(0);
             }
             Console.SetCursorPosition(player.Position.X, player.Position.Y);
+        }
+        public static Player GetPlayer()
+        {
+            return player;
         }
         public static string GameOverMessage()
         {

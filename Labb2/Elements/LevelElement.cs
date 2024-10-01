@@ -79,7 +79,7 @@
             }
             return false; 
         }
-        public bool IsEnemie(Player player, int x, int y)
+        public bool IsEnemy(int x, int y)
         {
             if (Enemies.Any(enemy => enemy.Position.X == x && enemy.Position.Y == y))
             {
