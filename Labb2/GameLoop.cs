@@ -31,7 +31,8 @@ namespace Labb2
         }
         public void MoveEnemies(Player player)
         {
-            foreach (var enemy in Enemies)
+            var enemiesCopy = Enemies.ToList();
+            foreach (var enemy in enemiesCopy)
             {
                 if (enemy is Rat)
                 {
@@ -89,14 +90,21 @@ namespace Labb2
         }
         private static void ExecuteAttack(Player player, Enemy enemy)
         {
-            int attack = player.AttackDice.Throw();
-            int defence = enemy.DefenceDice.Throw();
-            int damage = attack - defence;
+            int attackDiceThrow = player.AttackDice.Throw();
+            int defenceDiceThrow = enemy.DefenceDice.Throw();
+            int damage = attackDiceThrow - defenceDiceThrow;
+
+            string attackDiceConfiguratior = $"{player.AttackDice.NumberOfDice}d{player.AttackDice.SidesPerDice}+{player.AttackDice.Modifier}";
+            string defenceDiceConfiguratior = $"{enemy.DefenceDice.NumberOfDice}d{enemy.DefenceDice.SidesPerDice}+{enemy.DefenceDice.Modifier}";
+            string attackMessage = GenerateAttackMessage(player, attackDiceThrow, attackDiceConfiguratior, 
+                enemy, defenceDiceThrow, defenceDiceConfiguratior, damage);
+            Console.SetCursorPosition(0, 1);
+            Console.WriteLine(attackMessage);
 
             if (damage > 0)
             {
                 enemy.HealthPoints -= damage;
-                Console.SetCursorPosition(0, 1);
+                Console.SetCursorPosition(0, 2);
                 Console.WriteLine($"You attacked the {enemy.Name} and dealt {damage} damage. Current HP is {enemy.HealthPoints}");
                 if (enemy.HealthPoints <= 0)
                 {
@@ -111,6 +119,20 @@ namespace Labb2
                     Console.WriteLine(GameOverMessage());
                     // Skapa game over-funktion
                 }
+            }
+        }
+        private static string GenerateAttackMessage(Player player, int attackRoll, string attackDiceConfig, 
+            Enemy enemy, int defenceRoll, string defenceDiceConfig, int damage)
+        {
+            if (damage > 0)
+            {
+                return $"You (ATK: {attackDiceConfig} => {attackRoll}) attacked the {enemy.Name} " +
+                    $"(DEF: {defenceDiceConfig} => {defenceRoll}) and dealt {damage} damage!";
+            }
+            else
+            {
+                return $"You (ATK: {attackDiceConfig} => {attackRoll}) attacked the {enemy.Name} " +
+                    $"(DEF: {defenceDiceConfig} => {defenceRoll}), but did not manage to make any damage.";
             }
         }
         public static void RatAttackPlayer(Rat rat, Player player)

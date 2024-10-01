@@ -63,5 +63,9 @@ namespace Labb2
             string playerString = $"{nameSection} - {healthSection} - {turnSection}";
             return playerString;
         }
+        //public override string Dice.ToString()
+        //{
+        //    return $"Attack: {AttackDice.ToString()} - Defence: {DefenceDice.ToString()}";
+        //}
     }
 }

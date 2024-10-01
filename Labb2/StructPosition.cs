@@ -13,8 +13,6 @@
             X = x;
             Y = y;
         }
-        public int VertialDistanceTo(StructPosition position) => Math.Abs(position.X - X);
-        public int HorizontalDistanceTo(StructPosition position) => Math.Abs(position.Y - Y);
         public double DistanceTo(StructPosition position)
         {
             int deltaX = position.X - X;

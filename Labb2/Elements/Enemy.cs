@@ -6,7 +6,6 @@
         public int HealthPoints { get; set; }
         public Dice AttackDice { get; set; }
         public Dice DefenceDice { get; set; }
-
         protected Enemy(StructPosition position) : base(position)
         {
             

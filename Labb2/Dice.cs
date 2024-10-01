@@ -24,7 +24,6 @@
         }
         public override string ToString()
         {
-            Console.SetCursorPosition(0, 0);
             string resultString = "This is the result of the attack.";
             return resultString;
         }
