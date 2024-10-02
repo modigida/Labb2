@@ -99,6 +99,14 @@ namespace Labb2
             string attackMessage = GenerateAttackMessage(player, attackDiceThrow, attackDiceConfiguratior, 
                 enemy, defenceDiceThrow, defenceDiceConfiguratior, damage);
             Console.SetCursorPosition(0, 1);
+            if(damage > 0)
+            {
+                Console.ForegroundColor = ConsoleColor.Green;
+            }
+            else
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+            }
             Console.WriteLine(attackMessage);
 
             if (damage > 0)
@@ -135,12 +143,24 @@ namespace Labb2
                     $"(DEF: {defenceDiceConfig} => {defenceRoll}), but did not manage to make any damage.";
             }
         }
-        public static void RatAttackPlayer(Rat rat, Player player)
+        public static void EnemyAttackPlayer(Enemy enemy, Player player)
         {
-            int attack = rat.AttackDice.Throw();
+            int attack = 0;
+            if (enemy is Rat rat)
+            {
+                attack = rat.AttackDice.Throw();
+
+            }
+            else if (enemy is Snake snake)
+            {
+                attack = snake.AttackDice.Throw();
+            }
             int defence = player.DefenceDice.Throw();
             int damage = attack - defence;
-
+            HandleDamage(enemy, player, damage);
+        }
+        public static void HandleDamage(Enemy enemy, Player player, int damage) 
+        { 
             if (damage > 0)
             {
                 player.HealthPoints -= damage;
@@ -150,14 +170,26 @@ namespace Labb2
                 {
                     // Game over
                     Console.WriteLine(GameOverMessage());
+                    Environment.Exit(0);
                 }
             }
             else if (damage < 0)
             {
-                rat.HealthPoints -= Math.Abs(damage);
-                if (rat.HealthPoints <= 0)
+                if (enemy is Rat rat)
                 {
-                    Enemies.Remove(rat);
+                    rat.HealthPoints -= Math.Abs(damage);
+                    if (rat.HealthPoints <= 0)
+                    {
+                        Enemies.Remove(rat);
+                    }
+                }
+                else if (enemy is Snake snake)
+                {
+                    snake.HealthPoints -= Math.Abs(damage);
+                    if (snake.HealthPoints <= 0)
+                    {
+                        Enemies.Remove(snake);
+                    }
                 }
             }
         }
@@ -183,6 +215,27 @@ namespace Labb2
         public static Player GetPlayer()
         {
             return player;
+        }
+        public static Enemy GetEnemy(int x, int y)
+        {
+            foreach (var enemy in Enemies)
+            {
+                if (enemy is Rat rat)
+                {
+                    if (rat.Position.X == x && rat.Position.Y == y)
+                    {
+                        return rat;
+                    }
+                }
+                else if (enemy is Snake snake)
+                {
+                    if (snake.Position.X == x && snake.Position.Y == y)
+                    {
+                        return snake;
+                    }
+                }
+            }
+            return null;
         }
         public static string GameOverMessage()
         {

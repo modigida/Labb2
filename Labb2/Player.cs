@@ -31,6 +31,8 @@ namespace Labb2
             if (IsEnemy(newPosition.x, newPosition.y))
             {
                 GameLoop.PlayerAttackEnemy(this, newPosition.x, newPosition.y);
+                Enemy enemy = GameLoop.GetEnemy(newPosition.x, newPosition.y);
+                GameLoop.EnemyAttackPlayer(enemy, this);
             }
             Draw(previousPosition);
         }

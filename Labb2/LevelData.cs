@@ -4,10 +4,10 @@ namespace Labb2
 {
     public class LevelData
     {
-        private List<LevelElement> elements = new List<LevelElement>();
-        public List<LevelElement> Elements
+        private static List<LevelElement> _elements = new List<LevelElement>();
+        public static List<LevelElement> Elements
         {
-            get { return elements; }
+            get { return _elements; }
         }
         public List<LevelElement> Load(string textfile)
         {
@@ -21,25 +21,25 @@ namespace Labb2
                 {
                     if (line[x] == '#')
                     {
-                        elements.Add(new Wall(new StructPosition(x, y)));
+                        _elements.Add(new Wall(new StructPosition(x, y)));
                     }
                     else if (line[x] == 'r')
                     {
-                        elements.Add(new Rat(new StructPosition(x, y)));
+                        _elements.Add(new Rat(new StructPosition(x, y)));
                     }
                     else if (line[x] == 's')
                     {
-                        elements.Add(new Snake(new StructPosition(x, y)));
+                        _elements.Add(new Snake(new StructPosition(x, y)));
                     }
                 }
             }
             return Elements;
         }
-        public static void Print(int width, int height, List<LevelElement> elements)
+        public static void Print(int width, int height)
         {
             char[,] maze = InitializeMaze(width, height);
-            PlaceElementsInMaze(maze, elements);
-            DrawMaze(maze, elements);
+            PlaceElementsInMaze(maze);
+            DrawMaze(maze);
         }
         private static char[,] InitializeMaze(int width, int height)
         {
@@ -54,9 +54,9 @@ namespace Labb2
             }
             return maze;
         }
-        private static void PlaceElementsInMaze(char[,] maze, List<LevelElement> elements)
+        private static void PlaceElementsInMaze(char[,] maze)
         {
-            foreach (var element in elements)
+            foreach (var element in Elements)
             {
                 if (element is Wall)
                 {
@@ -75,7 +75,7 @@ namespace Labb2
                 }
             }
         }
-        private static void DrawMaze(char[,] maze, List<LevelElement> elements)
+        private static void DrawMaze(char[,] maze)
         {
             int height = maze.GetLength(0);
             int width = maze.GetLength(1);
@@ -84,7 +84,7 @@ namespace Labb2
             {
                 for (int j = 0; j < width; j++)
                 {
-                    foreach (var element in elements)
+                    foreach (var element in Elements)
                     {
                         if (element.Position.X == j && element.Position.Y == i)
                         {

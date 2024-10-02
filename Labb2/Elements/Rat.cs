@@ -41,7 +41,8 @@
             if (IsPlayer(ratPosition.x, ratPosition.y, playerPosition.x, playerPosition.y))
             {
                 Player player = GameLoop.GetPlayer();
-                GameLoop.RatAttackPlayer(this, player);
+                GameLoop.EnemyAttackPlayer(this, player);
+                GameLoop.PlayerAttackEnemy(player, ratPosition.x, ratPosition.y);
             }
             Draw(previousPosition);
         }
