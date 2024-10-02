@@ -38,14 +38,20 @@ namespace Labb2
                 if (enemy is Rat)
                 {
                     var rat = (Rat)enemy;
-                    rat.Update((rat.Position.X, rat.Position.Y),
+                    if(rat.IsVisible)
+                    {
+                        rat.Update((rat.Position.X, rat.Position.Y),
                         (player.Position.X, player.Position.Y));
+                    }
                 }
                 else if (enemy is Snake)
                 {
                     var snake = (Snake)enemy;
-                    snake.Update((snake.Position.X, snake.Position.Y),
+                    if (snake.IsVisible)
+                    {
+                        snake.Update((snake.Position.X, snake.Position.Y),
                         (player.Position.X, player.Position.Y));
+                    }
                 }
             }
         }
@@ -57,6 +63,12 @@ namespace Labb2
             {
                 int distanceX = Math.Abs(element.Position.X - playerPosition.x);
                 int distanceY = Math.Abs(element.Position.Y - playerPosition.y);
+
+                if (element is Enemy enemy && enemy.HealthPoints <= 0)
+                {
+                    enemy.IsVisible = false;
+                    continue; 
+                }
 
                 if (distanceX <= visionRadius && distanceY <= visionRadius)
                 {
@@ -95,74 +107,50 @@ namespace Labb2
             int defenceDiceThrow = enemy.DefenceDice.Throw();
             int damage = attackDiceThrow - defenceDiceThrow;
 
-            string attackDiceConfiguratior = $"{player.AttackDice.NumberOfDice}d{player.AttackDice.SidesPerDice}+{player.AttackDice.Modifier}";
-            string defenceDiceConfiguratior = $"{enemy.DefenceDice.NumberOfDice}d{enemy.DefenceDice.SidesPerDice}+{enemy.DefenceDice.Modifier}";
-            string attackMessage = GeneratePlayerAttackMessage(player, attackDiceThrow, attackDiceConfiguratior, 
-                enemy, defenceDiceThrow, defenceDiceConfiguratior, damage);
+            string attackMessage = GeneratePlayerAttackMessage(player, attackDiceThrow, enemy, defenceDiceThrow, damage);
             Console.SetCursorPosition(0, 1);
             Console.Write(new string(' ', Console.WindowWidth));
             Console.SetCursorPosition(0, 1);
-            if (damage > 0)
-            {
-                Console.ForegroundColor = ConsoleColor.Green;
-            }
-            else
-            {
-                Console.ForegroundColor = ConsoleColor.Red;
-            }
+            Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine(attackMessage);
 
             if (damage > 0)
             {
                 enemy.HealthPoints -= damage;
-                Console.SetCursorPosition(0, 2);
-                if (enemy.HealthPoints <= 0)
-                {
-                    Enemies.Remove(enemy);
-                }
             }
         }
-        private static string GeneratePlayerAttackMessage(Player player, int attackRoll, string attackDiceConfig, 
-            Enemy enemy, int defenceRoll, string defenceDiceConfig, int damage)
+        private static string GeneratePlayerAttackMessage(Player player, int attackRoll, Enemy enemy, int defenceRoll, int damage)
         {
             if (damage > 0)
             {
-                return $"{player.Name} (ATK: {attackDiceConfig} => {attackRoll}) attacked the {enemy.Name} " +
-                    $"(DEF: {defenceDiceConfig} => {defenceRoll}) and dealt {damage} damage!";
+                return $"{player.Name} (ATK: {player.AttackDice.ToString()} => {attackRoll}) attacked {enemy.Name} " +
+                    $"(DEF: {player.DefenceDice.ToString()} => {defenceRoll}) and dealt {damage} damage!";
             }
             else
             {
-                return $"{player.Name} (ATK: {attackDiceConfig} => {attackRoll}) attacked the {enemy.Name} " +
-                    $"(DEF: {defenceDiceConfig} => {defenceRoll}), but did not manage to make any damage.";
+                return $"{player.Name} (ATK: {player.AttackDice.ToString()} => {attackRoll}) attacked {enemy.Name} " +
+                    $"(DEF: {player.DefenceDice.ToString()} => {defenceRoll}), but did not manage to make any damage.";
             }
         }
         public static void EnemyAttackPlayer(Enemy enemy, Player player)
         {
             int attackDiceThrow = 0;
-            string attackDiceConfiguratior = string.Empty; 
-            string defenceDiceConfiguratior = string.Empty;
             string attackMessage = string.Empty;
             int defenceDiceThrow = 0;
             int damage = 0;
             if (enemy is Rat rat)
             {
                 attackDiceThrow = rat.AttackDice.Throw();
-                attackDiceConfiguratior = $"{rat.AttackDice.NumberOfDice}d{rat.AttackDice.SidesPerDice}+{rat.AttackDice.Modifier}";
-                defenceDiceConfiguratior = $"{rat.DefenceDice.NumberOfDice}d{rat.DefenceDice.SidesPerDice}+{rat.DefenceDice.Modifier}";
                 defenceDiceThrow = player.DefenceDice.Throw();
                 damage = attackDiceThrow - defenceDiceThrow;
-                attackMessage = GenerateEnemyAttackMessage(rat, attackDiceThrow, attackDiceConfiguratior, player, defenceDiceThrow, 
-                    defenceDiceConfiguratior, damage);
+                attackMessage = GenerateEnemyAttackMessage(rat, attackDiceThrow, player, defenceDiceThrow, damage);
             }
             else if (enemy is Snake snake)
             {
                 attackDiceThrow = snake.AttackDice.Throw();
-                attackDiceConfiguratior = $"{snake.AttackDice.NumberOfDice}d{snake.AttackDice.SidesPerDice}+{snake.AttackDice.Modifier}";
-                defenceDiceConfiguratior = $"{snake.DefenceDice.NumberOfDice}d{snake.DefenceDice.SidesPerDice}+{snake.DefenceDice.Modifier}";
                 defenceDiceThrow = player.DefenceDice.Throw();
                 damage = attackDiceThrow - defenceDiceThrow;
-                attackMessage = GenerateEnemyAttackMessage(snake, attackDiceThrow, attackDiceConfiguratior, player, defenceDiceThrow, 
-                    defenceDiceConfiguratior, damage);
+                attackMessage = GenerateEnemyAttackMessage(snake, attackDiceThrow, player, defenceDiceThrow, damage);
             }
 
             Console.SetCursorPosition(0, 2);
@@ -170,28 +158,27 @@ namespace Labb2
             Console.SetCursorPosition(0, 2);
             if (damage > 0)
             {
-                Console.ForegroundColor = ConsoleColor.Green;
+                Console.ForegroundColor = ConsoleColor.Red;
             }
             else
             {
-                Console.ForegroundColor = ConsoleColor.Red;
+                Console.ForegroundColor = ConsoleColor.Green;
             }
             Console.WriteLine(attackMessage);
 
             HandleDamage(enemy, player, damage);
         }
-        private static string GenerateEnemyAttackMessage(Enemy enemy, int attackRoll, string attackDiceConfig,
-            Player player, int defenceRoll, string defenceDiceConfig, int damage)
+        private static string GenerateEnemyAttackMessage(Enemy enemy, int attackRoll, Player player, int defenceRoll, int damage)
         {
             if (damage > 0)
             {
-                return $"{enemy.Name} (ATK: {attackDiceConfig} => {attackRoll}) attacked the {player.Name} " +
-                    $"(DEF: {defenceDiceConfig} => {defenceRoll}) and dealt {damage} damage!";
+                return $"{enemy.Name} (ATK: {enemy.AttackDice.ToString()} => {attackRoll}) attacked {player.Name} " +
+                    $"(DEF: {enemy.DefenceDice.ToString()} => {defenceRoll}) and dealt {damage} damage!";
             }
             else
             {
-                return $"{enemy.Name} (ATK: {attackDiceConfig} => {attackRoll}) attacked the {player.Name} " +
-                    $"(DEF: {defenceDiceConfig} => {defenceRoll}), but did not manage to make any damage.";
+                return $"{enemy.Name} (ATK: {enemy.AttackDice.ToString()} => {attackRoll}) attacked {player.Name} " +
+                    $"(DEF: {enemy.DefenceDice.ToString()} => {defenceRoll}), but did not manage to make any damage.";
             }
         }
         public static void HandleDamage(Enemy enemy, Player player, int damage) 
@@ -225,6 +212,8 @@ namespace Labb2
 
                 Environment.Exit(0);
             }
+            Console.SetCursorPosition(1, Console.WindowHeight - 7);
+            Console.Write(new string(' ', Console.WindowWidth));
             Console.SetCursorPosition(player.Position.X, player.Position.Y);
         }
         public static Player GetPlayer()
@@ -233,24 +222,10 @@ namespace Labb2
         }
         public static Enemy GetEnemy(int x, int y)
         {
-            foreach (var enemy in Enemies)
-            {
-                if (enemy is Rat rat)
-                {
-                    if (rat.Position.X == x && rat.Position.Y == y)
-                    {
-                        return rat;
-                    }
-                }
-                else if (enemy is Snake snake)
-                {
-                    if (snake.Position.X == x && snake.Position.Y == y)
-                    {
-                        return snake;
-                    }
-                }
-            }
-            return null;
+            var enemy = LevelData.Elements
+                        .OfType<Enemy>()  
+                        .FirstOrDefault(e => e.Position.X == x && e.Position.Y == y);
+            return enemy;
         }
         public static string GameOverMessage()
         {

@@ -1,4 +1,6 @@
-﻿namespace Labb2
+﻿using Labb2.Elements;
+
+namespace Labb2
 {
     public class Dice
     {
@@ -24,8 +26,8 @@
         }
         public override string ToString()
         {
-            string resultString = "This is the result of the attack.";
-            return resultString;
+            string diceConfiguration = $"{NumberOfDice}d{SidesPerDice}+{Modifier}";
+            return diceConfiguration;
         }
     }
 }

@@ -30,9 +30,17 @@ namespace Labb2
             }
             if (IsEnemy(newPosition.x, newPosition.y))
             {
-                GameLoop.PlayerAttackEnemy(this, newPosition.x, newPosition.y);
-                Enemy enemy = GameLoop.GetEnemy(newPosition.x, newPosition.y);
-                GameLoop.EnemyAttackPlayer(enemy, this);
+                var enemy = GameLoop.GetEnemy(newPosition.x, newPosition.y);
+                if (!enemy.IsVisible)
+                {
+                    Position = new StructPosition(newPosition.x, newPosition.y);
+                }
+                if(enemy.IsVisible)
+                {
+                    GameLoop.PlayerAttackEnemy(this, newPosition.x, newPosition.y);
+                    
+                    GameLoop.EnemyAttackPlayer(enemy, this);
+                }
             }
             Draw(previousPosition);
         }
@@ -65,9 +73,5 @@ namespace Labb2
             string playerString = $"{nameSection} - {healthSection} - {turnSection}";
             return playerString;
         }
-        //public override string Dice.ToString()
-        //{
-        //    return $"Attack: {AttackDice.ToString()} - Defence: {DefenceDice.ToString()}";
-        //}
     }
 }

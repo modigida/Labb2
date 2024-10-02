@@ -2,14 +2,14 @@
 using Labb2.Elements;
 
 string startMessage = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "ProgramDescription", "DescriptionAndRules.txt");
-if (File.Exists(startMessage))
+try
 {
     string fileContent = File.ReadAllText(startMessage);
     Console.WriteLine(fileContent);
 }
-else
+catch (Exception ex)
 {
-    Console.WriteLine("File not found");
+    Console.WriteLine($"An error occurred while reading the file: {ex.Message}");
 }
 
 while (true)
@@ -28,14 +28,13 @@ while (true)
 
 var leveldata = new LevelData();
 string textfile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Levels", "Level1.txt");
-
-if (File.Exists(textfile))
+try
 {
     leveldata.Load(textfile);
 }
-else
+catch (Exception ex)
 {
-    Console.WriteLine("File not found");
+    Console.WriteLine($"An error occurred while reading the file: {ex.Message}");
 }
 
 var player = new Player(new StructPosition(1, 4));
@@ -46,7 +45,6 @@ GameLoop.Enemies = LevelData.Elements.Where(element => element is Enemy).ToList(
 do
 {
     var game = new GameLoop(player);
-    // Why do I need to press key to continue here?
     int startRow = 3; 
     int numRowsToClear = 20;
     for (int i = 0; i < numRowsToClear; i++)
@@ -54,11 +52,9 @@ do
         Console.SetCursorPosition(0, startRow + i); 
         Console.Write(new string(' ', Console.WindowWidth));
     }
-
-    player.Draw();
+    
     GameLoop.UpdateVisibleElements((player.Position.X, player.Position.Y), LevelData.Elements);
     LevelData.Print(maxX + 1, maxY + 1);
-
-    // Loop will end when game over or player wins
+    player.Draw();
 }
 while (true);

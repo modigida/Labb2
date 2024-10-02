@@ -7,7 +7,7 @@
             Character = 'S';
             Color = ConsoleColor.Green;
             Name = "Snake";
-            HealthPoints = 25;
+            HealthPoints = 25; 
             AttackDice = new Dice(3, 4, 2);
             DefenceDice = new Dice(1, 8, 5);
         }

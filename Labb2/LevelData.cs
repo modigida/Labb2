@@ -1,5 +1,4 @@
 ﻿using Labb2.Elements;
-using System.Xml.Linq;
 
 namespace Labb2
 {
@@ -62,17 +61,14 @@ namespace Labb2
                 if (element is Wall)
                 {
                     maze[element.Position.Y, element.Position.X] = '#';
-                    LevelElement.Walls.Add(element);
                 }
                 else if (element is Rat)
                 {
                     maze[element.Position.Y, element.Position.X] = 'r';
-                    LevelElement.Enemies.Add(element);
                 }
                 else if (element is Snake)
                 {
                     maze[element.Position.Y, element.Position.X] = 's';
-                    LevelElement.Enemies.Add(element);
                 }
             }
         }

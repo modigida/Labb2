@@ -6,8 +6,6 @@
         public char Character { get; set; }
         public ConsoleColor Color { get; set; }
         public bool IsVisible { get; set; }
-        public static List<LevelElement> Walls = new List<LevelElement>();
-        public static List<LevelElement> Enemies = new List<LevelElement>();
         public LevelElement(StructPosition position)
         {
             Position = position;
@@ -73,7 +71,7 @@
         }
         public bool IsWall(int x, int y)
         {
-            if (Walls.Any((wall) => wall.Position.X == x && wall.Position.Y == y))
+            if (LevelData.Elements.Any((wall) => wall.Position.X == x && wall.Position.Y == y))
             {
                 return true;
             }
@@ -81,11 +79,9 @@
         }
         public bool IsEnemy(int x, int y)
         {
-            if (Enemies.Any(enemy => enemy.Position.X == x && enemy.Position.Y == y))
-            {
-                return true;
-            }
-            return false;
+            return LevelData.Elements
+                    .OfType<Enemy>()
+                    .Any(enemy => enemy.Position.X == x && enemy.Position.Y == y);
         }
         public bool IsPlayer(int x, int y, int playerPositionX, int playerPositionY)
         {
