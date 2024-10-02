@@ -42,7 +42,7 @@
             {
                 Player player = GameLoop.GetPlayer();
                 GameLoop.EnemyAttackPlayer(this, player);
-                GameLoop.PlayerAttackEnemy(player, ratPosition.x, ratPosition.y);
+                GameLoop.PlayerAttackEnemy(player, Position.X, Position.Y);
             }
             Draw(previousPosition);
         }
