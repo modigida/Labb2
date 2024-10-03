@@ -36,8 +36,7 @@
                 {
                     snakePosition.y += 1;
                 }
-                if (!IsPlayer(snakePosition.x, snakePosition.y, playerPosition.x, playerPosition.y) &&
-                !IsElement<LevelElement>(snakePosition.x, snakePosition.y))
+                if (!IsElement<LevelElement>(snakePosition.x, snakePosition.y))
                 {
                     Position = new StructPosition(snakePosition.x, snakePosition.y);
                 }

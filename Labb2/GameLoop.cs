@@ -1,6 +1,4 @@
 ﻿using Labb2.Elements;
-using System;
-using System.Xml.Linq;
 
 namespace Labb2
 {

@@ -25,7 +25,9 @@ while (true)
     }
 }
 
-var leveldata = new LevelData();
+var player = new Player(new StructPosition(1, 4));
+var leveldata = new LevelData(player);
+
 string textfile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Levels", "Level1.txt");
 try
 {
@@ -35,8 +37,6 @@ catch (Exception ex)
 {
     Console.WriteLine($"An error occurred while reading the file: {ex.Message}");
 }
-
-var player = new Player(new StructPosition(1, 4));
 
 int maxX = LevelData.Elements.Max(element => element.Position.X);
 int maxY = LevelData.Elements.Max(element => element.Position.Y);

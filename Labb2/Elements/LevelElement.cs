@@ -47,7 +47,6 @@
                 Console.ForegroundColor = ConsoleColor.Black;
             }
         }
-
         private bool TrySetCursorPosition(int x, int y, char? clearChar = null)
         {
             try
@@ -67,12 +66,8 @@
         public bool IsElement<T>(int x, int y) where T : LevelElement
         {
             return LevelData.Elements
-                    .OfType<T>()  
+                    .OfType<T>()
                     .Any(element => element.Position.X == x && element.Position.Y == y);
-        }
-        public bool IsPlayer(int x, int y, int playerPositionX, int playerPositionY)
-        {
-            return playerPositionX == x && playerPositionY == y;
         }
     }
 }

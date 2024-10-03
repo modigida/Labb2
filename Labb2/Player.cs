@@ -37,10 +37,6 @@ namespace Labb2
                 {
                     GameLoop.Attack(this, enemy);
                     GameLoop.Attack(enemy, this);
-
-                    //GameLoop.PlayerAttackEnemy(this, newPosition.x, newPosition.y);
-                    
-                    //GameLoop.EnemyAttackPlayer(enemy, this);
                 }
             }
             Draw(previousPosition);

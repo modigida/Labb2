@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Labb2.Elements
+﻿namespace Labb2.Elements
 {
     public class Rat : Enemy
     {
@@ -33,13 +31,12 @@ namespace Labb2.Elements
                     ratPosition.y += 1;
                     break;
             }
-            if (!IsPlayer(ratPosition.x, ratPosition.y, playerPosition.x, playerPosition.y) &&
-                (ratPosition.x < 53 && ratPosition.y < 18) &&
-                !IsElement<LevelElement>(ratPosition.x, ratPosition.y)) 
+            if ((ratPosition.x < 53 && ratPosition.y < 18) &&
+                !IsElement<LevelElement>(ratPosition.x, ratPosition.y))
             {
                 Position = new StructPosition(ratPosition.x, ratPosition.y);
             }
-            if (IsPlayer(ratPosition.x, ratPosition.y, playerPosition.x, playerPosition.y))
+            if (IsElement<Player>(ratPosition.x, ratPosition.y))
             {
                 Player player = GameLoop.GetPlayer();
                 GameLoop.Attack(this, player);
