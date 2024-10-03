@@ -67,10 +67,9 @@ namespace Labb2
 
             if (damage > 0)
             {
-                ApplyDamage(attacker, defender, damage);
+                HandleDamage(attacker, defender, damage);
             }
         }
-
         private static (int attackRoll, int defenceRoll, int damage) CalculateDamage(LevelElement attacker, LevelElement defender)
         {
             int attackDiceThrow = attacker is Player player
@@ -85,7 +84,6 @@ namespace Labb2
 
             return (attackDiceThrow, defenceDiceThrow, damage);
         }
-
         private static void HandleAttackMessage(LevelElement attacker, int attackRoll, LevelElement defender, int defenceRoll, int damage)
         {
             string attackMessage = GenerateAttackMessage(attacker, attackRoll, defender, defenceRoll, damage);
@@ -96,20 +94,7 @@ namespace Labb2
             Console.ForegroundColor = attacker is Player ? ConsoleColor.Yellow : ConsoleColor.Red;
             Console.WriteLine(attackMessage);
         }
-
-        private static void ApplyDamage(LevelElement attacker, LevelElement defender, int damage)
-        {
-            if (attacker is Player)
-            {
-                ((Enemy)defender).HealthPoints -= damage; 
-            }
-            else if (attacker is Enemy)
-            {
-                ((Player)defender).HealthPoints -= damage; 
-            }
-            HandleDamage(defender, damage);
-        }
-        private static void HandleDamage(LevelElement defender, int damage)
+        private static void HandleDamage(LevelElement attacker, LevelElement defender, int damage)
         {
             if (damage > 0)
             {
@@ -131,18 +116,18 @@ namespace Labb2
 
                     if (enemy.HealthPoints <= 0)
                     {
-                        enemy.IsVisible = false; 
+                        enemy.IsVisible = false;
                     }
                 }
             }
         }
         private static string GenerateAttackMessage(LevelElement attacker, int attackRoll, LevelElement defender, int defenceRoll, int damage)
         {
-            string attackerName = attacker is Player ? (attacker as Player).Name : (attacker as Enemy).Name;
-            string defenderName = defender is Player ? (defender as Player).Name : (defender as Enemy).Name;
+            string attackerName = (attacker as Player)?.Name ?? (attacker as Enemy)?.Name ?? "Unknown";
+            string defenderName = (defender as Player)?.Name ?? (defender as Enemy)?.Name ?? "Unknown";
 
-            string attackerDice = attacker is Player ? (attacker as Player).AttackDice.ToString() : (attacker as Enemy).AttackDice.ToString();
-            string defenderDice = defender is Player ? (defender as Player).DefenceDice.ToString() : (defender as Enemy).DefenceDice.ToString();
+            string attackerDice = (attacker as Player)?.AttackDice.ToString() ?? (attacker as Enemy)?.AttackDice.ToString() ?? "No Dice";
+            string defenderDice = (defender as Player)?.DefenceDice.ToString() ?? (defender as Enemy)?.DefenceDice.ToString() ?? "No Dice";
 
             if (damage > 0)
             {
