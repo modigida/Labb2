@@ -12,13 +12,33 @@
         }
         public void Draw()
         {
-            Console.SetCursorPosition(Position.X, Position.Y);
+            if (!TrySetCursorPosition(Position.X, Position.Y)) return;
+
+            SetConsoleColors();
+            Console.Write(Character);
+            Console.ResetColor();
+        }
+        public void Draw(StructPosition previousPosition)
+        {
+            TrySetCursorPosition(previousPosition.X, previousPosition.Y, ' ');
+
+            int positionX = Position.X;
+            int positionY = Position.Y;
+
+            if (TrySetCursorPosition(positionX, positionY))
+            {
+                SetConsoleColors();
+                Console.Write(Character);
+                Console.ResetColor();
+            }
+        }
+        private void SetConsoleColors()
+        {
             if (IsVisible)
             {
                 if (Character == '#')
                 {
                     Console.BackgroundColor = ConsoleColor.DarkGray;
-                    Console.ForegroundColor = Color;
                 }
                 Console.ForegroundColor = Color;
             }
@@ -26,47 +46,22 @@
             {
                 Console.ForegroundColor = ConsoleColor.Black;
             }
-            Console.Write(Character);
-            Console.ResetColor();
         }
-        public void Draw(StructPosition previousPosition)
-        {
-            var positionX = Position.X;
-            var positionY = Position.Y;
 
+        private bool TrySetCursorPosition(int x, int y, char? clearChar = null)
+        {
             try
             {
-                Console.SetCursorPosition(previousPosition.X, previousPosition.Y);
-                Console.Write(" ");
+                Console.SetCursorPosition(x, y);
+                if (clearChar.HasValue)
+                {
+                    Console.Write(clearChar.Value);
+                }
+                return true;
             }
             catch
             {
-                positionX = previousPosition.X;
-                positionY = previousPosition.Y;
-            }
-            try
-            {
-                Console.SetCursorPosition(positionX, positionY);
-                if(IsVisible)
-                {
-                    if(Character == '#')
-                    {
-                        Console.BackgroundColor = ConsoleColor.DarkGray;
-                        Console.ForegroundColor = Color;
-                    }
-                    Console.ForegroundColor = Color;
-                }
-                else
-                {
-                    Console.ForegroundColor = ConsoleColor.Black;
-                }
-                Console.Write(Character);
-                Console.ResetColor();
-            }
-            catch
-            {
-                positionX = previousPosition.X;
-                positionY = previousPosition.Y;
+                return false;
             }
         }
         public bool IsElement<T>(int x, int y) where T : LevelElement

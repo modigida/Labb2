@@ -1,4 +1,6 @@
-﻿namespace Labb2.Elements
+﻿using System;
+
+namespace Labb2.Elements
 {
     public class Rat : Enemy
     {
@@ -40,8 +42,8 @@
             if (IsPlayer(ratPosition.x, ratPosition.y, playerPosition.x, playerPosition.y))
             {
                 Player player = GameLoop.GetPlayer();
-                GameLoop.EnemyAttackPlayer(this, player);
-                GameLoop.PlayerAttackEnemy(player, Position.X, Position.Y);
+                GameLoop.Attack(this, player);
+                GameLoop.Attack(player, this);
             }
             Draw(previousPosition);
         }

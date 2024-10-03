@@ -35,9 +35,12 @@ namespace Labb2
                 }
                 if(enemy.IsVisible)
                 {
-                    GameLoop.PlayerAttackEnemy(this, newPosition.x, newPosition.y);
+                    GameLoop.Attack(this, enemy);
+                    GameLoop.Attack(enemy, this);
+
+                    //GameLoop.PlayerAttackEnemy(this, newPosition.x, newPosition.y);
                     
-                    GameLoop.EnemyAttackPlayer(enemy, this);
+                    //GameLoop.EnemyAttackPlayer(enemy, this);
                 }
             }
             Draw(previousPosition);
