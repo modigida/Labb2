@@ -69,27 +69,15 @@
                 positionY = previousPosition.Y;
             }
         }
-        public bool IsWall(int x, int y)
-        {
-            if (LevelData.Elements.Any((wall) => wall.Position.X == x && wall.Position.Y == y))
-            {
-                return true;
-            }
-            return false; 
-        }
-        public bool IsEnemy(int x, int y)
+        public bool IsElement<T>(int x, int y) where T : LevelElement
         {
             return LevelData.Elements
-                    .OfType<Enemy>()
-                    .Any(enemy => enemy.Position.X == x && enemy.Position.Y == y);
+                    .OfType<T>()  
+                    .Any(element => element.Position.X == x && element.Position.Y == y);
         }
         public bool IsPlayer(int x, int y, int playerPositionX, int playerPositionY)
         {
-            if (playerPositionX == x && playerPositionY == y)
-            {
-                return true;
-            }
-            return false;
+            return playerPositionX == x && playerPositionY == y;
         }
     }
 }

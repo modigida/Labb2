@@ -31,10 +31,9 @@
                     ratPosition.y += 1;
                     break;
             }
-            if (!IsWall(ratPosition.x, ratPosition.y) && 
-                !IsPlayer(ratPosition.x, ratPosition.y, playerPosition.x, playerPosition.y) && 
-                !IsEnemy(ratPosition.x, ratPosition.y) &&
-                (ratPosition.x < 53 && ratPosition.y < 18))
+            if (!IsPlayer(ratPosition.x, ratPosition.y, playerPosition.x, playerPosition.y) &&
+                (ratPosition.x < 53 && ratPosition.y < 18) &&
+                !IsElement<LevelElement>(ratPosition.x, ratPosition.y)) 
             {
                 Position = new StructPosition(ratPosition.x, ratPosition.y);
             }

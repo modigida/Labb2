@@ -6,7 +6,6 @@ namespace Labb2
 {
     public class GameLoop
     {
-        public static List<LevelElement> Enemies = new List<LevelElement>();
         public static int Moves { get; set; }
         private static Player player;
         public GameLoop(Player player)
@@ -32,58 +31,35 @@ namespace Labb2
         }
         public void MoveEnemies(Player player)
         {
-            var enemiesCopy = Enemies.ToList();
-            foreach (var enemy in enemiesCopy)
-            {
-                if (enemy is Rat)
-                {
-                    var rat = (Rat)enemy;
-                    if(rat.IsVisible)
-                    {
-                        rat.Update((rat.Position.X, rat.Position.Y),
-                        (player.Position.X, player.Position.Y));
-                    }
-                }
-                else if (enemy is Snake)
-                {
-                    var snake = (Snake)enemy;
-                    if (snake.IsVisible)
-                    {
-                        snake.Update((snake.Position.X, snake.Position.Y),
-                        (player.Position.X, player.Position.Y));
-                    }
-                }
-            }
+            var visibleEnemies = LevelData.Elements
+                .OfType<Enemy>() 
+                .Where(e => e.IsVisible); 
+
+            Action<Enemy> updateEnemy = enemy =>
+                enemy.Update((enemy.Position.X, enemy.Position.Y),
+                             (player.Position.X, player.Position.Y));
+
+            visibleEnemies.ToList().ForEach(updateEnemy);
         }
         public static List<LevelElement> UpdateVisibleElements((int x, int y) playerPosition, List<LevelElement> elements)
         {
             int visionRadius = 5;
-
-            foreach (var element in elements)
+            elements.ForEach(element =>
             {
-                int distanceX = Math.Abs(element.Position.X - playerPosition.x);
-                int distanceY = Math.Abs(element.Position.Y - playerPosition.y);
-
-                if (element is Enemy enemy && enemy.HealthPoints <= 0)
+                if (element is Enemy enemy)
                 {
-                    enemy.IsVisible = false;
-                    continue; 
+                    enemy.IsVisible = enemy.HealthPoints > 0 && IsWithinVisionRange(element.Position, playerPosition, visionRadius);
+                    return; 
                 }
-
-                if (distanceX <= visionRadius && distanceY <= visionRadius)
-                {
-                    element.IsVisible = true;
-                }
-                else if (element is Wall && element.IsVisible)
-                {
-                    element.IsVisible = true;
-                }
-                else
-                {
-                    element.IsVisible = false;
-                }
-            }
+                element.IsVisible = (element is Wall && element.IsVisible) || IsWithinVisionRange(element.Position, playerPosition, visionRadius);
+            });
             return elements;
+        }
+        private static bool IsWithinVisionRange(StructPosition position, (int x, int y) playerPosition, int visionRadius)
+        {
+            int distanceX = Math.Abs(position.X - playerPosition.x);
+            int distanceY = Math.Abs(position.Y - playerPosition.y);
+            return distanceX <= visionRadius && distanceY <= visionRadius;
         }
         public static void PlayerAttackEnemy(Player player, int x, int y)
         {

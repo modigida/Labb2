@@ -21,14 +21,12 @@ namespace Labb2
         public void Move(ConsoleKey key)
         {
             var previousPosition = Position;
-
             var newPosition = MovePlayer(key, (Position.X, Position.Y));
-            
-            if (!IsWall(newPosition.x, newPosition.y) && !IsEnemy(newPosition.x, newPosition.y))
+            if (!IsElement<LevelElement>(newPosition.x, newPosition.y))
             {
                 Position = new StructPosition(newPosition.x, newPosition.y);
             }
-            if (IsEnemy(newPosition.x, newPosition.y))
+            if (IsElement<Enemy>(newPosition.x, newPosition.y))
             {
                 var enemy = GameLoop.GetEnemy(newPosition.x, newPosition.y);
                 if (!enemy.IsVisible)

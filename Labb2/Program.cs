@@ -1,5 +1,4 @@
 ﻿using Labb2;
-using Labb2.Elements;
 
 string startMessage = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "ProgramDescription", "DescriptionAndRules.txt");
 try
@@ -41,7 +40,6 @@ var player = new Player(new StructPosition(1, 4));
 
 int maxX = LevelData.Elements.Max(element => element.Position.X);
 int maxY = LevelData.Elements.Max(element => element.Position.Y);
-GameLoop.Enemies = LevelData.Elements.Where(element => element is Enemy).ToList();
 do
 {
     var game = new GameLoop(player);
