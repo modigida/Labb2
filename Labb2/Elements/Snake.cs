@@ -2,46 +2,35 @@
 {
     public class Snake : Enemy
     {
-        public Snake(StructPosition position) : base(position)
+        public Snake(StructPosition position) : base(position, "Snake", new Dice(3, 4, 2), new Dice(1, 8, 5))
         {
             Character = 'S';
             Color = ConsoleColor.Green;
-            Name = "Snake";
             HealthPoints = 25; 
-            AttackDice = new Dice(3, 4, 2);
-            DefenceDice = new Dice(1, 8, 5);
         }
-        public override void Update((int x, int y) snakePosition, (int x, int y) playerPosition)
+        public override void Update(StructPosition snakePosition, StructPosition playerPosition)
         {
-            var snakePos = new StructPosition(snakePosition.x, snakePosition.y);
-            var playerPos = new StructPosition(playerPosition.x, playerPosition.y);
-            double distanceToPlayer = snakePos.DistanceTo(playerPos);
+            var snakePos = new StructPosition(snakePosition.X, snakePosition.Y);
+            var playerPos = new StructPosition(playerPosition.X, playerPosition.Y);
             var previousPosition = Position;
 
-            if (distanceToPlayer < 2)
+            snakePos = MoveSnakeAwayFromPlayer(snakePos, playerPos);
+
+            if (!IsElement<LevelElement>(snakePos))
             {
-                if (snakePosition.x < playerPosition.x)
-                {
-                    snakePosition.x -= 1;
-                }
-                else if (snakePosition.x > playerPosition.x)
-                {
-                    snakePosition.x += 1;
-                }
-                if (snakePosition.y < playerPosition.y)
-                {
-                    snakePosition.y -= 1;
-                }
-                else if (snakePosition.y > playerPosition.y)
-                {
-                    snakePosition.y += 1;
-                }
-                if (!IsElement<LevelElement>(snakePosition.x, snakePosition.y))
-                {
-                    Position = new StructPosition(snakePosition.x, snakePosition.y);
-                }
+                Position = new StructPosition(snakePos.X, snakePos.Y);
             }
+
             Draw(previousPosition);
+        }
+        private StructPosition MoveSnakeAwayFromPlayer(StructPosition snake, StructPosition player)
+        {
+            if (snake.DistanceTo(player) <= 2)
+            {
+                snake.X += (player.X < snake.X) ? 1 : (player.X > snake.X) ? -1 : 0;
+                snake.Y += (player.Y < snake.Y) ? 1 : (player.Y > snake.Y) ? -1 : 0;
+            }
+            return snake;
         }
     }
 }

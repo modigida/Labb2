@@ -21,19 +21,19 @@ namespace Labb2
         public void Move(ConsoleKey key)
         {
             var previousPosition = Position;
-            var newPosition = MovePlayer(key, (Position.X, Position.Y));
-            if (!IsElement<LevelElement>(newPosition.x, newPosition.y))
+            var newPosition = MovePlayer(key, Position);
+            if (!IsElement<LevelElement>(newPosition))
             {
-                Position = new StructPosition(newPosition.x, newPosition.y);
+                Position = new StructPosition(newPosition.X, newPosition.Y);
             }
-            if (IsElement<Enemy>(newPosition.x, newPosition.y))
+            if (IsElement<Enemy>(newPosition))
             {
-                var enemy = GameLoop.GetEnemy(newPosition.x, newPosition.y);
+                var enemy = GameLoop.GetEnemy(newPosition)!;
                 if (!enemy.IsVisible)
                 {
-                    Position = new StructPosition(newPosition.x, newPosition.y);
+                    Position = new StructPosition(newPosition.X, newPosition.Y);
                 }
-                if(enemy.IsVisible)
+                if (enemy.IsVisible)
                 {
                     GameLoop.Attack(this, enemy);
                     GameLoop.Attack(enemy, this);
@@ -41,21 +41,21 @@ namespace Labb2
             }
             Draw(previousPosition);
         }
-        public (int x, int y) MovePlayer(ConsoleKey key, (int x, int y) playerPosition)
+        public StructPosition MovePlayer(ConsoleKey key, StructPosition playerPosition)
         {
             switch (key)
             {
                 case ConsoleKey.LeftArrow:
-                    playerPosition.x -= 1;
+                    playerPosition.X -= 1;
                     break;
                 case ConsoleKey.RightArrow:
-                    playerPosition.x += 1;
+                    playerPosition.X += 1;
                     break;
                 case ConsoleKey.UpArrow:
-                    playerPosition.y -= 1;
+                    playerPosition.Y -= 1;
                     break;
                 case ConsoleKey.DownArrow:
-                    playerPosition.y += 1;
+                    playerPosition.Y += 1;
                     break;
             }
             return playerPosition;

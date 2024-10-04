@@ -63,11 +63,11 @@
                 return false;
             }
         }
-        public bool IsElement<T>(int x, int y) where T : LevelElement
+        public bool IsElement<T>(StructPosition position) where T : LevelElement
         {
             return LevelData.Elements
                     .OfType<T>()
-                    .Any(element => element.Position.X == x && element.Position.Y == y);
+                    .Any(element => element.Position.X == position.X && element.Position.Y == position.Y);
         }
     }
 }

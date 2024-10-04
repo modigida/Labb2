@@ -2,47 +2,49 @@
 {
     public class Rat : Enemy
     {
-        public Rat(StructPosition position) : base(position)
+        public Rat(StructPosition position) : base(position, "Rat", new Dice(1, 6, 3), new Dice(1, 6, 1))
         {
             Character = 'R';
             Color = ConsoleColor.Red;
-            Name = "Rat";
             HealthPoints = 10;
-            AttackDice = new Dice(1, 6, 3);
-            DefenceDice = new Dice(1, 6, 1);
         }
-        public override void Update((int x, int y) ratPosition, (int x, int y) playerPosition)
+        public override void Update(StructPosition ratPosition, StructPosition playerPosition)
         {
             Random random = new Random();
             int direction = random.Next(4);
             var previousPosition = Position;
+            ratPosition = MoveRatRandomly(ratPosition, direction);
+            if ((ratPosition.X < 53 && ratPosition.Y < 19) &&
+                !IsElement<LevelElement>(ratPosition))
+            {
+                Position = new StructPosition(ratPosition.X, ratPosition.Y);
+            }
+            if (IsElement<Player>(ratPosition))
+            {
+                Player? player = GameLoop.GetPlayer();
+                GameLoop.Attack(this, player!);
+                GameLoop.Attack(player!, this);
+            }
+            Draw(previousPosition);
+        }
+        private StructPosition MoveRatRandomly(StructPosition ratPosition, int direction)
+        {
             switch (direction)
             {
                 case 0:
-                    ratPosition.x -= 1;
+                    ratPosition.X -= 1;
                     break;
                 case 1:
-                    ratPosition.x += 1;
+                    ratPosition.X += 1;
                     break;
                 case 2:
-                    ratPosition.y -= 1;
+                    ratPosition.Y -= 1;
                     break;
                 case 3:
-                    ratPosition.y += 1;
+                    ratPosition.Y += 1;
                     break;
             }
-            if ((ratPosition.x < 53 && ratPosition.y < 18) &&
-                !IsElement<LevelElement>(ratPosition.x, ratPosition.y))
-            {
-                Position = new StructPosition(ratPosition.x, ratPosition.y);
-            }
-            if (IsElement<Player>(ratPosition.x, ratPosition.y))
-            {
-                Player player = GameLoop.GetPlayer();
-                GameLoop.Attack(this, player);
-                GameLoop.Attack(player, this);
-            }
-            Draw(previousPosition);
+            return ratPosition;
         }
     }
 }

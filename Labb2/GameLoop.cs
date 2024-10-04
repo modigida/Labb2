@@ -5,7 +5,7 @@ namespace Labb2
     public class GameLoop
     {
         public static int Moves { get; set; }
-        private static Player player;
+        private static Player? player;
         public GameLoop(Player player)
         {
             Moves++;
@@ -34,12 +34,11 @@ namespace Labb2
                 .Where(e => e.IsVisible); 
 
             Action<Enemy> updateEnemy = enemy =>
-                enemy.Update((enemy.Position.X, enemy.Position.Y),
-                             (player.Position.X, player.Position.Y));
+                enemy.Update(enemy.Position, player.Position);
 
             visibleEnemies.ToList().ForEach(updateEnemy);
         }
-        public static List<LevelElement> UpdateVisibleElements((int x, int y) playerPosition, List<LevelElement> elements)
+        public static List<LevelElement> UpdateVisibleElements(StructPosition playerPosition, List<LevelElement> elements)
         {
             int visionRadius = 5;
             elements.ForEach(element =>
@@ -47,16 +46,17 @@ namespace Labb2
                 if (element is Enemy enemy)
                 {
                     enemy.IsVisible = enemy.HealthPoints > 0 && IsWithinVisionRange(element.Position, playerPosition, visionRadius);
-                    return; 
+                    return;
                 }
+
                 element.IsVisible = (element is Wall && element.IsVisible) || IsWithinVisionRange(element.Position, playerPosition, visionRadius);
             });
             return elements;
         }
-        private static bool IsWithinVisionRange(StructPosition position, (int x, int y) playerPosition, int visionRadius)
+        private static bool IsWithinVisionRange(StructPosition position, StructPosition playerPosition, int visionRadius)
         {
-            int distanceX = Math.Abs(position.X - playerPosition.x);
-            int distanceY = Math.Abs(position.Y - playerPosition.y);
+            int distanceX = Math.Abs(position.X - playerPosition.X);
+            int distanceY = Math.Abs(position.Y - playerPosition.Y);
             return distanceX <= visionRadius && distanceY <= visionRadius;
         }
         public static void Attack(LevelElement attacker, LevelElement defender)
@@ -79,7 +79,7 @@ namespace Labb2
             int defenceDiceThrow = defender is Player
                 ? ((Player)defender).DefenceDice.Throw()
                 : ((Enemy)defender).DefenceDice.Throw();
-
+            
             int damage = attackDiceThrow - defenceDiceThrow;
 
             return (attackDiceThrow, defenceDiceThrow, damage);
@@ -159,15 +159,15 @@ namespace Labb2
             Console.Write(new string(' ', Console.WindowWidth));
             Console.SetCursorPosition(player.Position.X, player.Position.Y);
         }
-        public static Player GetPlayer()
+        public static Player? GetPlayer()
         {
             return player;
         }
-        public static Enemy? GetEnemy(int x, int y)
+        public static Enemy? GetEnemy(StructPosition position)
         {
             return LevelData.Elements
                 .OfType<Enemy>()
-                .FirstOrDefault(e => e.Position.X == x && e.Position.Y == y);
+                .FirstOrDefault(e => e.Position.X == position.X && e.Position.Y == position.Y);
         }
         public static string GameOverMessage()
         {

@@ -51,7 +51,7 @@ do
         Console.Write(new string(' ', Console.WindowWidth));
     }
     
-    GameLoop.UpdateVisibleElements((player.Position.X, player.Position.Y), LevelData.Elements);
+    GameLoop.UpdateVisibleElements(player.Position, LevelData.Elements);
     LevelData.Print(maxX + 1, maxY + 1);
     player.Draw();
 }

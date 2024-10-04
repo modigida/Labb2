@@ -16,13 +16,9 @@ namespace Labb2
         public int Throw()
         {
             Random random = new Random();
-            int total = 0;
-            for (int i = 0; i < NumberOfDice; i++)
-            {
-                total += random.Next(1, SidesPerDice + 1); 
-            }
-            total += Modifier;
-            return total;
+            int total = Enumerable.Range(0, NumberOfDice)
+                                  .Sum(_ => random.Next(1, SidesPerDice + 1));
+            return total + Modifier;
         }
         public override string ToString()
         {
