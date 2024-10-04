@@ -20,10 +20,6 @@ namespace Labb2
                                   .Sum(_ => random.Next(1, SidesPerDice + 1));
             return total + Modifier;
         }
-        public override string ToString()
-        {
-            string diceConfiguration = $"{NumberOfDice}d{SidesPerDice}+{Modifier}";
-            return diceConfiguration;
-        }
+        public override string ToString() => $"{NumberOfDice}d{SidesPerDice}+{Modifier}";
     }
 }
