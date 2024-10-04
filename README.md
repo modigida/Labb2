@@ -34,7 +34,7 @@ Key Implementations:
 <img src="Images/GenerateAttackMessages.png" alt="Image showing output for the program." width="800" >
 
 * LINQ: Used LINQ for querying and filtering game elements, which simplified operations like detecting collisions and managing lists of active characters.
-<!--<img src="Images/Code.png" alt="Image showing output for the program." width="400" height="150" >-->
+<img src="Images/Code.png" alt="Image showing output for the program." width="600">
 
 
 * Game Logic: Developed custom methods for handling movement, attack calculations, and updating game states, ensuring a responsive and engaging gameplay experience.
