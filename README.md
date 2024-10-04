@@ -15,7 +15,7 @@ Key Features:
 <img src="Images/MazeVisability.png" alt="Image showing output for the program." width="400" >
 
 * Dice Mechanics: Simulates dice rolls for attack and defense, allowing players and enemies to deal damage based on dice configurations.
-<img src="Images/AttackMessages.png" alt="Image showing output for the program." width="400" >
+<img src="Images/AttackMessages.png" alt="Image showing output for the program." width="500" >
 
 <img src="Images/GameOver.png" alt="Image showing output for the program." width="400" >
 
@@ -31,9 +31,17 @@ Key Implementations:
 
 * Lambda Expressions & Delegates: Incorporated lambda expressions and delegates to streamline event handling and reduce boilerplate code, making the codebase more modular and easier to read.
 * Polymorphism: Leveraged polymorphism through abstract classes and interfaces, allowing for dynamic method resolution and more flexible interactions between different game elements.
+<img src="Images/GenerateAttackMessages.png" alt="Image showing output for the program." width="800" >
+
 * LINQ: Used LINQ for querying and filtering game elements, which simplified operations like detecting collisions and managing lists of active characters.
+<!--<img src="Images/Code.png" alt="Image showing output for the program." width="400" height="150" >-->
+
+
 * Game Logic: Developed custom methods for handling movement, attack calculations, and updating game states, ensuring a responsive and engaging gameplay experience.
 * Error Handling: Implemented error handling to manage invalid inputs and ensure smooth gameplay, enhancing user experience.
+<img src="Images/ErrorHandling.png" alt="Image showing output for the program." width="400" >
+
+
 
 These design choices contributed to a robust and organized code structure, making the project not only functional but also scalable for future enhancements.
 
